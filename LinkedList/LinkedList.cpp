@@ -160,34 +160,100 @@ void LinkedList::pushFront(const ValueType& value)
 
 void LinkedList::remove(const size_t pos)
 {
+	if (pos < 0) {
+		assert(pos < 0);
+	}
+	else if (pos > this->_size) {
+		assert(pos > this->_size);
+	}
+
+
+		if (pos == 0)
+		{
+			Node* newHead = _head->next;
+			delete _head;
+			_head = newHead;
+			return;
+		}
+
+		Node* node = _head;
+		for (size_t i = 0; i < pos - 1; ++i)
+		{
+			node = node->next;
+		}
+
+		Node* delNode = node->next;
+		node->next = delNode->next;
+		delete delNode;
 }
+
 
 void LinkedList::removeNextNode(Node* node)
 {
+	node->removeNext();
 }
 
 long long int LinkedList::findIndex(const ValueType& value) const
 {
-	return 0;
+	Node* node = _head;
+	for (ValueType i = 0; i < _size; i++)
+	{
+		if (node->value == value)
+		{
+			return i;
+		}
+		node = node->next;
+	}
+	return -1;
 }
 
 LinkedList::Node* LinkedList::findNode(const ValueType& value) const
 {
+	Node* node = _head;
+	for (ValueType i = 0; i < _size; i++)
+	{
+		if (node->value == value)
+		{
+			return node;
+		}
+		node = node->next;
+	}
 	return nullptr;
 }
 
 void LinkedList::reverse()
 {
+	Node* current = _head;
+	Node* prev = nullptr, * next = nullptr;
+
+	while (current != nullptr) {
+
+		next = current->next;
+
+
+		current->next = prev;
+
+
+		prev = current;
+		current = next;
+	}
+	_head = prev;
 }
 
 LinkedList LinkedList::reverse() const
 {
-	return LinkedList();
+	LinkedList copy(*this);
+	copy.reverse();
+
+	return copy;
 }
 
 LinkedList LinkedList::getReverseList() const
 {
-	return LinkedList();
+	LinkedList copy(*this);
+	copy.reverse();
+
+	return copy;
 }
 
 size_t LinkedList::size() const
